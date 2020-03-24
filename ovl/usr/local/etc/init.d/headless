@@ -1,0 +1,10 @@
+#!/sbin/openrc-run
+
+name="headless"
+command="/usr/local/bin/headless.sh"
+command_background=true
+pidfile="/run/${RC_SVCNAME}.pid"
+
+stop_post() {
+    rm /etc/runlevels/default/headless
+}
