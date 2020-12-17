@@ -8,7 +8,7 @@ __create_eni()
 
 	auto wlan0
 	iface wlan0 inet dhcp
-	        hostname pi
+					hostname pi
 	EOF
 }
 
@@ -16,8 +16,8 @@ __create_eww()
 {
 	cat <<-EOF > /etc/wpa_supplicant/wpa_supplicant.conf
 	network={
-	        ssid="ssid"
-	        psk="password"
+		ssid="ssid"
+		psk="password"
 	}
 	EOF
 }
