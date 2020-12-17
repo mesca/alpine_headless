@@ -1,0 +1,43 @@
+#!/bin/sh
+
+__create_eni()
+{
+	cat <<-EOF > /etc/network/interfaces
+	auto lo
+	iface lo inet loopback
+
+	auto wlan0
+	iface wlan0 inet dhcp
+					hostname pi
+	EOF
+}
+
+__create_eww()
+{
+	cat <<-EOF > /etc/wpa_supplicant/wpa_supplicant.conf
+	network={
+		ssid="ssid"
+		psk="password"
+	}
+	EOF
+}
+
+__edit_ess()
+{
+	cat <<-EOF >> /etc/ssh/sshd_config
+	PermitEmptyPasswords yes
+	PermitRootLogin yes
+	EOF
+}
+
+apk add wpa_supplicant
+__create_eww
+__create_eni
+rc-service wpa_supplicant start
+rc-service networking start
+
+/sbin/setup-sshd -c openssh
+cp /etc/ssh/sshd_config /etc/ssh/sshd_config.orig
+__edit_ess
+rc-service sshd restart
+mv /etc/ssh/sshd_config.orig /etc/ssh/sshd_config
